@@ -1,0 +1,133 @@
+MacOS - installation of AWS cli, Azure cli and Google Cloud cli, and docker /docker engine
+
+- Azure Cli
+Ref:
+https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos?view=azure-cli-latest
+
+$ bash
+$ brew update && brew install azure-cli
+$ which az
+
+Important
+The Azure CLI has a dependency on the python3 package in Homebrew, and will install it on your system, even if Python 2 is available. The Azure CLI is guaranteed to be compatible with the latest version of python3 published on Homebrew.
+&
+There may be a minor version mismatch or other issue during homebrew installation. The CLI doesn't use a Python virtual environment, so it relies on finding the installed Python version. A possible fix is to install and relink the python3 dependency from Homebrew.
+$ bash 
+$ brew update && brew install python3 && brew upgrade python3
+$ brew link --overwrite python3
+
+Run Azure cli
+$az login
+
+AWS cli
+
+$ brew install awscli
+The aws cli will be installed in /usr/local/bin
+
+Check if its working
+$ which aws
+$ aws help
+
+Checking brew inventory/pkgs
+$brew info
+$brew list
+$brew search awscli
+
+AWS cli configuration
+Ref:
+https://www.chrisjmendez.com/2017/01/01/aws-working-with-aws-client/
+https://formulae.brew.sh/formula/awscli
+https://www.chrisjmendez.com/2017/01/01/aws-working-with-aws-client/
+
+Brew Commands
+This section provide a quick set of commands on how to install AWS CLI on macOS using Homebrew. It is assumed that Homebrew is already installed. If not, please follow this link.
+
+$ brew update             # Fetch latest version of homebrew and formula.
+$ brew search awscli      # Searches all known formulae for a partial or exact match.
+$ brew info awscli        # Displays information about the given formulae.
+$ brew install awscli     # Install the given formulae.
+$ brew cleanup  
+
+Google Cloud cli (google cloud SDK)
+Strongly recommend to install the SDK with virtual environment setup
+$ pip install virtualenv    (if you don’t have it on your Mac with python3)
+~
+$ python -V
+Python 3.7.3
+
+Create python3 vituralenv
+$ python -m venv ~/cloud/gcloud-venv
+
+Activate virtualenv
+$ source ~/cloud/gloud-venv/bin/activate 
+
+Following the instructions below:
+https://cloud.google.com/sdk/docs/quickstart-macos
+
+1)	Create Google Cloud project
+2)	Make sure the python 2.7 is available (or python3)
+3)	Download two tar.gz files and extracted to location where you like to…and have PATH setup
+For example, ~/cloud/gcloud
+4)	Optional: If you're having trouble getting the gcloud command to work, ensure your $PATH is defined appropriately. Use the install script to add Cloud SDK tools to your path. You will also be able to opt-in to command-completion for your bash shell and usage statistics collection during the installation process. Run the script using this command:
+./google-cloud-sdk/install.sh
+Restart your terminal for the changes to take effect.
+Docker and docker engine (cli) (toolbox) not docker desktop(GUI) 
+Note: Docker toolbox and desktop can be coexisted.
+$ brew install docker docker-machine
+
+Ref: 
+https://medium.com/@yutafujii_59175/a-complete-one-by-one-guide-to-install-docker-on-your-mac-os-using-homebrew-e818eb4cfc3
+
+Example from: 
+If you would like to have virtualbox installed on Mac with version of 10.14 and above you will encounter installation failure! See DMeechan
+
+Optional 
+$ brew cask install virtualbox
+-> need password
+-> possibly need to address System Preference setting
+
+Only applied to Virtualbox with new vm image – if you would like to create docker engine on public clouds, Aws, Gcloud, Azure…please follow 
+
+will create virtualbox image called default
+$ docker-machine create --driver virtualbox default
+$ docker-machine env default
+$ eval "$(docker-machine env default)"
+$ docker run hello-world
+$ docker-machine stop default
+
+To start docker engine on Mac
+On the Mac, click on docker GUI which is asking for access 
+Click ok and then type user/passwd
+
+How to uninstall docker toolbox ?
+Ref:
+https://docs.docker.com/toolbox/toolbox_install_mac/#how-to-uninstall-toolbox
+
+Removing Toolbox involves removing all the Docker components it includes.
+A full uninstall also includes removing the local and remote machines you created with Docker Machine. In some cases, you might want to keep machines created with Docker Machine.
+For example, if you plan to re-install Docker Machine as a part of Docker Desktop for Mac you can continue to manage those machines through Docker. Or, if you have remote machines on a cloud provider and you plan to manage them using the provider, you wouldn’t want to remove them. So the step to remove machines is described here as optional.
+To uninstall Toolbox on a Mac, do the following:
+1.	List your machines.
+2.	$ docker-machine ls
+3.	NAME                ACTIVE   DRIVER       STATE     URL                        SWARM
+4.	dev                 *        virtualbox   Running   tcp://192.168.1.100:2576
+5.	my-docker-machine            virtualbox   Stopped
+6.	default                      virtualbox   Stopped
+
+Optionally, remove each machine. For example:
+$ docker-machine rm my-docker-machine
+Successfully removed my-docker-machine
+
+•  This step is optional because if you plan to re-install Docker Machine as a part of Docker Desktop for Mac, you can import and continue to manage those machines through Docker.
+•  In your “Applications” folder, remove the “Docker” directory, which contains “Docker Quickstart Terminal” and “Kitematic”.
+•  Run the following in a command shell to fully remove Kitematic:
+$ rm -fr ~/Library/Application\ Support/Kitematic
+
+•  Remove the docker, docker-compose, and docker-machine commands from the /usr/local/bin folder. Docker Desktop for Mac and Brew may also have installed them; in case of doubt leave them, or reinstall them via Brew, or rerun Docker Desktop for Mac (no need to reinstall it).
+$ rm -f /usr/local/bin/docker
+$ rm -f /usr/local/bin/docker-compose
+$ rm -f /usr/local/bin/docker-machine
+
+•  Optionally, remove the ~/.docker/machine directory.
+This directory stores some configuration and/or state, such as information about created machines and certificates.
+•  Uninstall Oracle VirtualBox, which is installed as a part of the Toolbox install.
